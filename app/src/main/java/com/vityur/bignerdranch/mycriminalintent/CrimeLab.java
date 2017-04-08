@@ -2,6 +2,7 @@ package com.vityur.bignerdranch.mycriminalintent;
 
 import android.content.Context;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,6 +14,8 @@ public class CrimeLab {
     private List<Crime> mCrimes;
 
     private CrimeLab(Context context) {
+        mCrimes = new ArrayList<>();
+
         for (int i = 0; i < 10; i++) {
             Crime crime = new Crime();
             crime.setTitle("Crime #" + i);
@@ -21,7 +24,7 @@ public class CrimeLab {
         }
     }
 
-    public CrimeLab get(Context context) {
+    public static CrimeLab get(Context context) {
         if (sCrimeLab == null) {
             sCrimeLab = new CrimeLab(context);
         }
