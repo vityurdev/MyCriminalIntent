@@ -1,5 +1,6 @@
 package com.vityur.bignerdranch.mycriminalintent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,7 +19,10 @@ import java.util.List;
  */
 
 public class CrimeListFragment extends Fragment {
-    RecyclerView mCrimeRecyclerView;
+    private static final int REQUEST_CHANGES_DONE_OR_NOT = 12345;
+
+    private RecyclerView mCrimeRecyclerView;
+    private CrimeAdapter mAdapter;
 
     @Nullable
     @Override
@@ -33,17 +37,35 @@ public class CrimeListFragment extends Fragment {
         return view;
     }
 
+
     private void updateUI() {
         CrimeLab mCrimeLab = CrimeLab.get(getActivity());
         List<Crime> crimeList = mCrimeLab.getCrimes();
-        CrimeAdapter mAdapter = new CrimeAdapter(crimeList);
-        mCrimeRecyclerView.setAdapter(mAdapter);
+
+        if (mAdapter == null) {
+            mAdapter = new CrimeAdapter(crimeList);
+            mCrimeRecyclerView.setAdapter(mAdapter);
+        } else {
+            mAdapter.notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (data == null) {
+            return;
+        }
+
+        if (requestCode == REQUEST_CHANGES_DONE_OR_NOT & resultCode == CrimeActivity.RESULT_CHANGES_DONE) {
+            updateUI();
+        }
     }
 
     private class CrimeHolder extends RecyclerView.ViewHolder {
         TextView mCrimeTitleTextView;
         TextView mCrimeDateTimeTextView;
         CheckBox mCrimeSolvedCheckBox;
+        Crime mCrime;
 
         public CrimeHolder(View itemView) {
             super(itemView);
@@ -51,11 +73,21 @@ public class CrimeListFragment extends Fragment {
             mCrimeTitleTextView = (TextView) itemView.findViewById(R.id.list_item_crime_title);
             mCrimeDateTimeTextView = (TextView) itemView.findViewById(R.id.list_item_crime_date);
             mCrimeSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_crime_solved_checkbox);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+                    startActivityForResult(intent, REQUEST_CHANGES_DONE_OR_NOT);
+                }
+            });
         }
 
         private void bindCrime(Crime crime) {
+            mCrime = crime;
             mCrimeTitleTextView.setText(crime.getTitle());
-            mCrimeDateTimeTextView.setText(crime.getTitle().toString());
+            mCrimeDateTimeTextView.setText(crime.getDate().toString());
             mCrimeSolvedCheckBox.setChecked(crime.isSolved());
         }
     }

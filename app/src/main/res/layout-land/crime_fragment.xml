@@ -62,4 +62,29 @@
 
     </LinearLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <Button
+                android:id="@+id/crime_submit_changes_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/crime_submit_changes"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/crime_submit_changes_button"
+                android:layout_centerHorizontal="true"
+                android:text="@string/crime_submit_description"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
 </LinearLayout>

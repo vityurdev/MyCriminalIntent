@@ -6,4 +6,6 @@
     <string name="crime_solved_label">Solved?</string>
     <string name="crime_report">Send crime report</string>
     <string name="crime_suspect">Choose suspect</string>
+    <string name="crime_submit_changes">Submit changes</string>
+    <string name="crime_submit_description">If no, just press Back.</string>
 </resources>
