@@ -19,7 +19,7 @@ public abstract class SingleFragmentActivity extends FragmentActivity {
         setContentView(R.layout.fragment_container);
 
         FragmentManager fm = getSupportFragmentManager();
-        Fragment fragment = (Fragment) fm.findFragmentById(R.id.fragment_container);
+        Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 
         if (fragment == null) {
             fragment = createFragment();

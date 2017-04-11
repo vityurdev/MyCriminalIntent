@@ -69,7 +69,8 @@ public class CrimeFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                //
+                mCrimeSubmitChangesButton.setText(R.string.crime_submit_changes);
+                mCrimeSubmitChangesButton.setClickable(true);
             }
 
             @Override
@@ -92,7 +93,8 @@ public class CrimeFragment extends Fragment {
         mCrimeSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // mCrime.setSolved(isChecked);
+                mCrimeSubmitChangesButton.setText(R.string.crime_submit_changes);
+                mCrimeSubmitChangesButton.setClickable(true);
             }
         });
 
@@ -106,16 +108,16 @@ public class CrimeFragment extends Fragment {
                 // mCrime.setDate();
                 mCrime.setSolved(mCrimeSolvedCheckBox.isChecked());
                 final Intent intent = new Intent(getContext(), CrimeListActivity.class);
-                getActivity().setResult(CrimeActivity.RESULT_CHANGES_DONE, intent);
+                getActivity().setResult(CrimePagerActivity.RESULT_CHANGES_DONE, intent);
 
                 mCrimeSubmitChangesButton.setText("Submitted!");
                 mCrimeSubmitChangesButton.setClickable(false);
-                new Handler().postDelayed(new Runnable() {
+                /*new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         startActivity(intent);
                     }
-                }, 1000);
+                }, 500);*/
             }
         });
 

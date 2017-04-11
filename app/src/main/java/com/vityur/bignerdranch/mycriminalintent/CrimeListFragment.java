@@ -7,9 +7,12 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -37,6 +40,11 @@ public class CrimeListFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
 
     private void updateUI() {
         CrimeLab mCrimeLab = CrimeLab.get(getActivity());
@@ -56,7 +64,7 @@ public class CrimeListFragment extends Fragment {
             return;
         }
 
-        if (requestCode == REQUEST_CHANGES_DONE_OR_NOT & resultCode == CrimeActivity.RESULT_CHANGES_DONE) {
+        if (requestCode == REQUEST_CHANGES_DONE_OR_NOT & resultCode == CrimePagerActivity.RESULT_CHANGES_DONE) {
             updateUI();
         }
     }
@@ -74,14 +82,22 @@ public class CrimeListFragment extends Fragment {
             mCrimeDateTimeTextView = (TextView) itemView.findViewById(R.id.list_item_crime_date);
             mCrimeSolvedCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_crime_solved_checkbox);
 
+            mCrimeSolvedCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    mCrime.setSolved(isChecked);
+                }
+            });
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-
-                    Intent intent = CrimeActivity.newIntent(getActivity(), mCrime.getId());
+                    Intent intent = CrimePagerActivity.newIntent(getActivity(), mCrime.getId());
                     startActivityForResult(intent, REQUEST_CHANGES_DONE_OR_NOT);
                 }
             });
+
+            registerForContextMenu(itemView);
         }
 
         private void bindCrime(Crime crime) {
